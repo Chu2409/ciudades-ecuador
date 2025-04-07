@@ -1,0 +1,8 @@
+venv
+
+neo4j/data/*
+!neo4j/data/.gitkeep
+neo4j/logs/*
+!neo4j/logs/.gitkeep
+neo4j/import/*
+!neo4j/import/.gitkeep

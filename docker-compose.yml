@@ -1,0 +1,15 @@
+services:
+  neo4j:
+    image: neo4j:4.4
+    ports:
+      - "7474:7474"  # Para la interfaz web
+      - "7687:7687"  # Para conexiones Bolt (desde Python)
+    environment:
+      - NEO4J_AUTH=neo4j/password123  # Usuario/contraseña
+      - NEO4J_dbms_memory_heap_initial__size=512M
+      - NEO4J_dbms_memory_heap_max__size=2G
+    volumes:
+      - ./neo4j/data:/data            # Persistencia de datos
+      - ./neo4j/logs:/logs            # Logs
+      - ./neo4j/import:/import        # Carpeta para importar archivos
+    restart: unless-stopped
