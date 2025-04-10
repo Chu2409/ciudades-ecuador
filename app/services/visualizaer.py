@@ -10,7 +10,16 @@ class VisualizerService:
         self.conn = Neo4jConnection()
 
     def dibujar_ruta(
-        self, G, posiciones, camino, origen, destino, algoritmo, distancia_total
+        self,
+        G,
+        posiciones,
+        camino,
+        origen,
+        destino,
+        algoritmo,
+        distancia_total,
+        show_distances=False,
+        show_coordinates=False,
     ):
         plt.figure(figsize=(18, 14))
         nx.draw(
@@ -22,6 +31,26 @@ class VisualizerService:
         nx.draw_networkx_edges(
             G, posiciones, edgelist=path_edges, edge_color="red", width=3
         )
+
+        # Mostrar distancias si se solicita
+        if show_distances:
+            edge_labels = nx.get_edge_attributes(G, "weight")
+            nx.draw_networkx_edge_labels(
+                G, posiciones, edge_labels=edge_labels, font_size=12
+            )
+
+        # Mostrar coordenadas si se solicita
+        if show_coordinates:
+            coord_labels = {}
+            for node, (lat, lon) in posiciones.items():
+                coord_labels[node] = f"({lat:.4f}, {lon:.4f})"
+
+            # Posicionamiento de las etiquetas de coordenadas por encima de los nodos
+            coord_pos = {node: (x, y + 0.08) for node, (x, y) in posiciones.items()}
+
+            nx.draw_networkx_labels(
+                G, pos=coord_pos, labels=coord_labels, font_size=10, font_color="red"
+            )
 
         timestamp = int(time.time())
         filename = f"{algoritmo}_{timestamp}.png"

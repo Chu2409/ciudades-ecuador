@@ -20,13 +20,7 @@ export default function Home() {
   const [showDistances, setShowDistances] = useState(false);
   const [showCoordinates, setShowCoordinates] = useState(false);
 
-  async function fetchGrafoData({
-    showDistances,
-    showCoordinates,
-  }: {
-    showDistances: boolean;
-    showCoordinates: boolean;
-  }) {
+  async function fetchGrafoData() {
     try {
       setLoading(true);
       const response = await getGrafo({ showDistances, showCoordinates });
@@ -40,7 +34,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    fetchGrafoData({ showDistances, showCoordinates });
+    fetchGrafoData();
   }, [showDistances, showCoordinates]);
 
   return (
@@ -129,7 +123,7 @@ export default function Home() {
                 variant="outline"
                 className=" right-4 top-4"
                 onClick={() => {
-                  fetchGrafoData({ showDistances, showCoordinates });
+                  fetchGrafoData();
                 }}
                 disabled={loading}
               >

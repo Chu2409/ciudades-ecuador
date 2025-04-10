@@ -221,7 +221,7 @@ class ManualAlgoritmosService:
         # No hay camino
         return None, float("infinity")
 
-    def ruta_dijkstra(self, origen, destino):
+    def ruta_dijkstra(self, origen, destino, show_distances, show_coordinates):
         """
         Calcula la ruta usando Dijkstra y genera visualización
         """
@@ -238,13 +238,15 @@ class ManualAlgoritmosService:
                     destino,
                     "dijkstra",
                     distancia,
+                    show_distances=show_distances,
+                    show_coordinates=show_coordinates,
                 ), None
             else:
                 return None, "No hay ruta entre las ciudades."
         except Exception as e:
             return None, f"Error: {str(e)}"
 
-    def ruta_astar(self, origen, destino):
+    def ruta_astar(self, origen, destino, show_distances, show_coordinates):
         """
         Calcula la ruta usando A* y genera visualización
         """
@@ -261,13 +263,15 @@ class ManualAlgoritmosService:
                     destino,
                     "astar",
                     distancia,
+                    show_distances=show_distances,
+                    show_coordinates=show_coordinates,
                 ), None
             else:
                 return None, "No hay ruta entre las ciudades."
         except Exception as e:
             return None, f"Error: {str(e)}"
 
-    def ruta_voraz(self, origen, destino):
+    def ruta_voraz(self, origen, destino, show_distances, show_coordinates):
         """
         Calcula la ruta usando algoritmo voraz y genera visualización
         """
@@ -284,6 +288,8 @@ class ManualAlgoritmosService:
                     destino,
                     "voraz",
                     distancia,
+                    show_distances=show_distances,
+                    show_coordinates=show_coordinates,
                 ), None
             else:
                 return None, "No hay ruta entre las ciudades."

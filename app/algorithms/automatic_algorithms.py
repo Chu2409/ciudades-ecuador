@@ -16,18 +16,26 @@ class AutomaticAlgoritmosService:
         lat2, lon2 = coords[ciudad2]
         return sqrt((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2)
 
-    def ruta_dijkstra(self, origen, destino):
+    def ruta_dijkstra(self, origen, destino, show_distances, show_coordinates):
         G, posiciones, _ = self.visualizer.construir_grafo()
         try:
             camino = nx.dijkstra_path(G, origen, destino, weight="weight")
             distancia = nx.dijkstra_path_length(G, origen, destino, weight="weight")
             return self.visualizer.dibujar_ruta(
-                G, posiciones, camino, origen, destino, "Dijkstra", distancia
+                G,
+                posiciones,
+                camino,
+                origen,
+                destino,
+                "Dijkstra",
+                distancia,
+                show_distances,
+                show_coordinates,
             ), None
         except nx.NetworkXNoPath:
             return None, "No hay ruta entre las ciudades."
 
-    def ruta_astar(self, origen, destino):
+    def ruta_astar(self, origen, destino, show_distances, show_coordinates):
         G, posiciones, coords = self.visualizer.construir_grafo()
         try:
             camino = nx.astar_path(
@@ -45,12 +53,20 @@ class AutomaticAlgoritmosService:
                 weight="weight",
             )
             return self.visualizer.dibujar_ruta(
-                G, posiciones, camino, origen, destino, "AStar", distancia
+                G,
+                posiciones,
+                camino,
+                origen,
+                destino,
+                "AStar",
+                distancia,
+                show_distances,
+                show_coordinates,
             ), None
         except nx.NetworkXNoPath:
             return None, "No hay ruta entre las ciudades."
 
-    def ruta_voraz(self, origen, destino):
+    def ruta_voraz(self, origen, destino, show_distances, show_coordinates):
         G, posiciones, coords = self.visualizer.construir_grafo()
 
         from queue import PriorityQueue
@@ -70,7 +86,15 @@ class AutomaticAlgoritmosService:
                     for i in range(len(camino) - 1)
                 )
                 return self.visualizer.dibujar_ruta(
-                    G, posiciones, camino, origen, destino, "Voraz", distancia
+                    G,
+                    posiciones,
+                    camino,
+                    origen,
+                    destino,
+                    "Voraz",
+                    distancia,
+                    show_distances,
+                    show_coordinates,
                 ), None
 
             if nodo_actual in visitados:

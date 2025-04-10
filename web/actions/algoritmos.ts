@@ -1,10 +1,12 @@
 import axiosClient from "@/config/axios";
 
-export const calculateDijkstra = async (city1: string, city2: string) => {
+export const calculateDijkstra = async (city1: string, city2: string, showDistances = false, showCoords= false) => {
   const res = await axiosClient.get<{status: string, image_url: string}>('/ruta/dijkstra', {
     params: {
       origen: city1,
       destino: city2,
+      show_distances: showDistances,
+      show_coordinates: showCoords,
     },
   })
 
@@ -15,11 +17,13 @@ export const calculateDijkstra = async (city1: string, city2: string) => {
   return res.data.image_url;
 }
 
-export const calculateAStar = async (city1: string, city2: string) => {
+export const calculateAStar = async (city1: string, city2: string, showDistances = false, showCoords= false) => {
   const res = await axiosClient.get<{status: string, image_url: string}>('/ruta/astar', {
     params: {
       origen: city1,
       destino: city2,
+      show_distances: showDistances,
+      show_coordinates: showCoords,
     },
   })
 
@@ -30,11 +34,13 @@ export const calculateAStar = async (city1: string, city2: string) => {
   return res.data.image_url;
 }
 
-export const calculateVoraz = async (city1: string, city2: string) => {
+export const calculateVoraz = async (city1: string, city2: string, showDistances = false, showCoords= false) => {
   const res = await axiosClient.get<{status: string, image_url: string}>('/ruta/voraz', {
     params: {
       origen: city1,
       destino: city2,
+      show_distances: showDistances,
+      show_coordinates: showCoords,
     },
   })
 

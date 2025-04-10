@@ -40,7 +40,7 @@ def get_importer_service():
 
 
 def get_algoritmos_service():
-    return AutomaticAlgoritmosService()
+    return ManualAlgoritmosService()
 
 
 # Rutas para importación de datos
@@ -194,16 +194,27 @@ def eliminar_conexion(
 
 
 # Rutas para algoritmos de cálculo de rutas
-@app.get("/ruta/dijkstra", tags=["Algoritmos"])
+@app.get(
+    "/ruta/dijkstra",
+    tags=["Algoritmos"],
+)
 def calcular_ruta_dijkstra(
     origen: str = Query(..., description="Ciudad de origen"),
     destino: str = Query(..., description="Ciudad de destino"),
+    show_distances: bool = Query(
+        default=False, description="Mostrar distancias en el grafo"
+    ),
+    show_coordinates: bool = Query(
+        default=False, description="Mostrar coordenadas de las ciudades"
+    ),
     algoritmos: ManualAlgoritmosService = Depends(get_algoritmos_service),
 ):
     """
     Calcula la ruta óptima usando el algoritmo Dijkstra
     """
-    img, error = algoritmos.ruta_dijkstra(origen, destino)
+    img, error = algoritmos.ruta_dijkstra(
+        origen, destino, show_distances, show_coordinates
+    )
     if error:
         return JSONResponse({"status": "error", "message": error}, status_code=404)
     return JSONResponse({"status": "success", "image_url": img})
@@ -213,12 +224,20 @@ def calcular_ruta_dijkstra(
 def calcular_ruta_astar(
     origen: str = Query(..., description="Ciudad de origen"),
     destino: str = Query(..., description="Ciudad de destino"),
+    show_distances: bool = Query(
+        default=False, description="Mostrar distancias en el grafo"
+    ),
+    show_coordinates: bool = Query(
+        default=False, description="Mostrar coordenadas de las ciudades"
+    ),
     algoritmos: ManualAlgoritmosService = Depends(get_algoritmos_service),
 ):
     """
     Calcula la ruta óptima usando el algoritmo A*
     """
-    img, error = algoritmos.ruta_astar(origen, destino)
+    img, error = algoritmos.ruta_astar(
+        origen, destino, show_distances, show_coordinates
+    )
     if error:
         return JSONResponse({"status": "error", "message": error}, status_code=404)
     return JSONResponse({"status": "success", "image_url": img})
@@ -228,12 +247,20 @@ def calcular_ruta_astar(
 def calcular_ruta_voraz(
     origen: str = Query(..., description="Ciudad de origen"),
     destino: str = Query(..., description="Ciudad de destino"),
+    show_distances: bool = Query(
+        default=False, description="Mostrar distancias en el grafo"
+    ),
+    show_coordinates: bool = Query(
+        default=False, description="Mostrar coordenadas de las ciudades"
+    ),
     algoritmos: ManualAlgoritmosService = Depends(get_algoritmos_service),
 ):
     """
     Calcula la ruta usando el algoritmo voraz (best-first search)
     """
-    img, error = algoritmos.ruta_voraz(origen, destino)
+    img, error = algoritmos.ruta_voraz(
+        origen, destino, show_distances, show_coordinates
+    )
     if error:
         return JSONResponse({"status": "error", "message": error}, status_code=404)
     return JSONResponse({"status": "success", "image_url": img})

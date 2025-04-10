@@ -20,6 +20,7 @@ import {
   calculateDijkstra,
   calculateVoraz,
 } from "@/actions/algoritmos";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const algorithms = [
   { id: "dijkstra", name: "Dijkstra" },
@@ -37,6 +38,9 @@ export default function RouteCalculatorForm() {
   const [algorithm, setAlgorithm] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingCities, setLoadingCities] = useState(true);
+  const [showDistances, setShowDistances] = useState(false);
+  const [showCoordinates, setShowCoordinates] = useState(false);
+
 
   async function fetchCities() {
     setLoadingCities(true);
@@ -58,12 +62,12 @@ export default function RouteCalculatorForm() {
 
   const calculateRoute = async () => {
     if (!sourceCity || !targetCity || !algorithm) {
-      toast({
-        title: "Campos incompletos",
-        description:
-          "Por favor, selecciona ciudad de origen, destino y algoritmo",
-        variant: "destructive",
-      });
+      // toast({
+      //   title: "Campos incompletos",
+      //   description:
+      //     "Por favor, selecciona ciudad de origen, destino y algoritmo",
+      //   variant: "destructive",
+      // });
       return;
     }
 
@@ -71,13 +75,13 @@ export default function RouteCalculatorForm() {
 
     try {
       if (algorithm === "dijkstra") {
-        const imageUrl = await calculateDijkstra(sourceCity, targetCity);
+        const imageUrl = await calculateDijkstra(sourceCity, targetCity, showDistances, showCoordinates);
         setImageUrl(imageUrl);
       } else if (algorithm === "a-star") {
-        const imageUrl = await calculateAStar(sourceCity, targetCity);
+        const imageUrl = await calculateAStar(sourceCity, targetCity, showDistances, showCoordinates);
         setImageUrl(imageUrl);
       } else if (algorithm === "voraz") {
-        const imageUrl = await calculateVoraz(sourceCity, targetCity);
+        const imageUrl = await calculateVoraz(sourceCity, targetCity, showDistances, showCoordinates);
         setImageUrl(imageUrl);
       }
     } catch (error) {
@@ -92,6 +96,11 @@ export default function RouteCalculatorForm() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    calculateRoute();
+  }, [showDistances, showCoordinates]);
+  
 
   return (
     <div className="space-y-6">
@@ -203,6 +212,36 @@ export default function RouteCalculatorForm() {
             <h3 className="text-lg font-semibold mb-4">
               Resultado del cálculo
             </h3>
+
+            <div className="flex flex-row gap-4 items-center">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terms"
+                  checked={showDistances}
+                  onCheckedChange={() => setShowDistances(!showDistances)}
+                />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Ver distancias
+                </label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terms"
+                  checked={showCoordinates}
+                  onCheckedChange={() => setShowCoordinates(!showCoordinates)}
+                />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Ver coordenadas
+                </label>
+              </div>
+            </div>
 
             <div className="mb-6 overflow-hidden rounded-md border">
               <Image
