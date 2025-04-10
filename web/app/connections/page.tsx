@@ -1,10 +1,21 @@
+'use client'
 import { Suspense } from "react"
 import Link from "next/link"
 import { Plus, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ConnectionList from "./connection-list"
+import useConnectionStore from "@/store/connection-store"
+import { useRouter } from "next/navigation"
 
 export default function ConnectionsPage() {
+  
+  const { setConnection } = useConnectionStore()
+  const router = useRouter()
+  const onClick = () => {
+    setConnection(undefined)
+    router.push("/connections/form")
+  }
+
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center mb-6">
@@ -19,12 +30,10 @@ export default function ConnectionsPage() {
 
       <div className="flex justify-between items-center mb-6">
         <p className="text-muted-foreground">Administra las conexiones entre ciudades</p>
-        <Link href="/connections/new">
-          <Button className="gap-1">
+          <Button className="gap-1" onClick={onClick}>
             <Plus className="h-4 w-4" />
             Nueva Conexión
           </Button>
-        </Link>
       </div>
 
       <Suspense fallback={<div>Cargando conexiones...</div>}>

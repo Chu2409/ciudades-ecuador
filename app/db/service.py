@@ -2,7 +2,7 @@ from app.db.connection import Neo4jConnection
 from app.geo.coords import GeoLocatorService
 
 
-class GraphManager:
+class CrudService:
     def __init__(self):
         self.connection = Neo4jConnection()
         self.geolocator = GeoLocatorService()
@@ -20,8 +20,7 @@ class GraphManager:
         query = """
         MERGE (c:Ciudad {name: $name})
         SET c.latitude = $lat,
-            c.longitude = $lon,
-            c.created_at = datetime()
+            c.longitude = $lon
         RETURN c
         """
         return self.connection.run_query(query, {"name": name, "lat": lat, "lon": lon})
@@ -77,7 +76,7 @@ class GraphManager:
         ORDER BY c.name
         """
         result = self.connection.run_query(query)
-        return [(r["name"], r["lat"], r["lon"]) for r in result]
+        return [{"nombre": r["name"], "lat": r["lat"], "lon": r["lon"]} for r in result]
 
     def get_all_connections(self):
         """Obtener todas las conexiones únicas"""
@@ -88,7 +87,10 @@ class GraphManager:
         ORDER BY c1.name, c2.name
         """
         result = self.connection.run_query(query)
-        return [(r["city1"], r["city2"], r["distance"]) for r in result]
+        return [
+            {"city1": r["city1"], "city2": r["city2"], "distance": r["distance"]}
+            for r in result
+        ]
 
     def _city_exists(self, name):
         """Verificar si una ciudad ya existe"""
@@ -102,7 +104,7 @@ class GraphManager:
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    graph = GraphManager()
+    graph = CrudService()
 
     # Ejemplos de operaciones
     try:

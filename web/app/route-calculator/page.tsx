@@ -20,19 +20,7 @@ export default function RouteCalculatorPage() {
         Calcula la mejor ruta y distancia entre dos ciudades utilizando diferentes algoritmos
       </p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <RouteCalculatorForm />
-
-        <div className="border rounded-md p-6 flex flex-col">
-          <h2 className="text-xl font-semibold mb-4">Resultado</h2>
-          <p className="text-sm text-muted-foreground mb-4">
-            Selecciona un origen, destino y algoritmo para calcular la mejor ruta
-          </p>
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center text-muted-foreground">La visualización de la ruta aparecerá aquí</div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
